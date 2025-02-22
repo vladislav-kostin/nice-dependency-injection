@@ -1,0 +1,10 @@
+{
+  "name": "com.vladislav-kostin.nice-dependency-injection",
+  "version": "0.1.0",
+  "displayName": "Nice Dependency Injection",
+  "description": "Simple DI system with no unnecessary setup steps.",
+  "author": {
+    "name": "Vlad Kostin",
+    "url": "https://github.com/vladislav-kostin"
+  }
+}
