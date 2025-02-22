@@ -6,11 +6,11 @@ This package provides minimal setup dependency injection for static MonoBehavior
 
 ## Usage
 
-Add `[Injectable]` attribute to a MonoBehavior-based class declaration for it to be injected into any field of that type in MonoBehavior scripts with `[Inject]` attributes. The attribute is inherited.  
-
-The injection is initialized right after scene load, after all `Awake` methods and before all `Start` methods. The classes that are being injected are currently expected to be in the scene when the injection happens.  
-
-If the object is spawned dynamically, it needs a `DependencyInjection` attribute.  
+Add `[Injectable]` attribute to a class declaration.
+Add `[Inject]` attribute to a field.
+Initial injection happens after scene is loaded, after all `Awake` methods and before all `Start` methods.
+If your object spawns after initial injection but also needs it, add `DependancyInjector` to it.
+If `[Inject]` field is found befor the corresponding `[Injectable]` type is bound, an error will be produced. 
 
 ## Example
 
