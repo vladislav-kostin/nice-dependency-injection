@@ -7,8 +7,8 @@ public class DependencyInjector : MonoBehaviour
 	private static readonly Dictionary<Type, bool> _typeToIsInjectable = new();
 	private static readonly Dictionary<Type, bool> _typeToHasInjectFields = new();
 
-	[SerializeField] private List<MonoBehaviour> _componentsWithInjectFields;
-	[SerializeField] private List<MonoBehaviour> _injectableComponents;
+	[HideInInspector] [SerializeField] private List<MonoBehaviour> _componentsWithInjectFields;
+	[HideInInspector] [SerializeField] private List<MonoBehaviour> _injectableComponents;
 
 	private bool _isProcessed;
 

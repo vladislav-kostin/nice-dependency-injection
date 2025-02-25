@@ -1,0 +1,16 @@
+{
+    "name": "NiceDependencyInjection.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:fdcc5e6494c2a8546a2fa21875f675d2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
