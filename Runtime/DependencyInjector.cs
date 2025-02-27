@@ -1,108 +1,112 @@
 using System;
 using System.Collections.Generic;
+using NiceDependencyInjection.Utility;
 using UnityEngine;
 
-public class DependencyInjector : MonoBehaviour
+namespace NiceDependencyInjection
 {
-	private static readonly Dictionary<Type, bool> _typeToIsInjectable = new();
-	private static readonly Dictionary<Type, bool> _typeToHasInjectFields = new();
-
-	[HideInInspector] [SerializeField] private List<MonoBehaviour> _componentsWithInjectFields;
-	[HideInInspector] [SerializeField] private List<MonoBehaviour> _injectableComponents;
-
-	private bool _isProcessed;
-
-	private void Awake()
+	public class DependencyInjector : MonoBehaviour
 	{
-		if (DependancyInjectionManager.IsInitialized)
+		private static readonly Dictionary<Type, bool> _typeToIsInjectable = new();
+		private static readonly Dictionary<Type, bool> _typeToHasInjectFields = new();
+
+		[HideInInspector] [SerializeField] private List<MonoBehaviour> _componentsWithInjectFields;
+		[HideInInspector] [SerializeField] private List<MonoBehaviour> _injectableComponents;
+
+		private bool _isProcessed;
+
+		private void Awake()
 		{
-			Process();
-		}
-		else
-		{
-			DependancyInjectionManager.OnInitialized += Process;
-		}
-	}
-
-	private void OnDestroy()
-	{
-		DependancyInjectionManager.OnInitialized -= Process;
-	}
-
-	public void OnValidate()
-	{
-		CacheComponents();
-	}
-
-	private void Process()
-	{
-		if (!_isProcessed)
-		{
-			InjectComponents();
-			InjectIntoComponents();
-			_isProcessed = true;
-		}
-	}
-
-	private void CacheComponents()
-	{
-		_injectableComponents.Clear();
-		_componentsWithInjectFields.Clear();
-		var allMonoBehaviours = GetComponents<MonoBehaviour>();
-
-		foreach (var target in allMonoBehaviours)
-		{
-			var targetType = target.GetType();
-
-			if (!_typeToIsInjectable.TryGetValue(targetType, out var isInjectable))
+			if (DependencyInjectionManager.IsInitialized)
 			{
-				isInjectable = Attribute.IsDefined(targetType, typeof(InjectableAttribute));
-				_typeToIsInjectable[targetType] = isInjectable;
+				Process();
 			}
-
-			if (!_typeToHasInjectFields.TryGetValue(targetType, out var hasInjectableFields))
+			else
 			{
-				hasInjectableFields = false;
+				DependencyInjectionManager.OnInitialized += Process;
+			}
+		}
 
-				var fields = ReflectionUtility.GetCachedFieldInfo(targetType);
+		private void OnDestroy()
+		{
+			DependencyInjectionManager.OnInitialized -= Process;
+		}
 
-				foreach (var field in fields)
+		public void OnValidate()
+		{
+			CacheComponents();
+		}
+
+		private void Process()
+		{
+			if (!_isProcessed)
+			{
+				InjectComponents();
+				InjectIntoComponents();
+				_isProcessed = true;
+			}
+		}
+
+		private void CacheComponents()
+		{
+			_injectableComponents.Clear();
+			_componentsWithInjectFields.Clear();
+			var allMonoBehaviours = GetComponents<MonoBehaviour>();
+
+			foreach (var target in allMonoBehaviours)
+			{
+				var targetType = target.GetType();
+
+				if (!_typeToIsInjectable.TryGetValue(targetType, out var isInjectable))
 				{
-					if (field.IsDefined(typeof(InjectAttribute), true))
-					{
-						hasInjectableFields = true;
-						break;
-					}
+					isInjectable = Attribute.IsDefined(targetType, typeof(InjectableAttribute));
+					_typeToIsInjectable[targetType] = isInjectable;
 				}
 
-				_typeToHasInjectFields[targetType] = hasInjectableFields;
-			}
+				if (!_typeToHasInjectFields.TryGetValue(targetType, out var hasInjectableFields))
+				{
+					hasInjectableFields = false;
 
-			if (isInjectable)
-			{
-				_injectableComponents.Add(target);
-			}
+					var fields = ReflectionUtility.GetCachedFieldInfo(targetType);
 
-			if (hasInjectableFields)
-			{
-				_componentsWithInjectFields.Add(target);
+					foreach (var field in fields)
+					{
+						if (field.IsDefined(typeof(InjectAttribute), true))
+						{
+							hasInjectableFields = true;
+							break;
+						}
+					}
+
+					_typeToHasInjectFields[targetType] = hasInjectableFields;
+				}
+
+				if (isInjectable)
+				{
+					_injectableComponents.Add(target);
+				}
+
+				if (hasInjectableFields)
+				{
+					_componentsWithInjectFields.Add(target);
+				}
 			}
 		}
-	}
 
-	private void InjectComponents()
-	{
-		foreach (var component in _injectableComponents)
+		private void InjectComponents()
 		{
-			DependancyInjectionManager.InjectObject(component);
+			foreach (var component in _injectableComponents)
+			{
+				DependencyInjectionManager.InjectObject(component);
+			}
 		}
-	}
 
-	private void InjectIntoComponents()
-	{
-		foreach (var component in _componentsWithInjectFields)
+		private void InjectIntoComponents()
 		{
-			DependancyInjectionManager.InjectIntoObject(component);
+			foreach (var component in _componentsWithInjectFields)
+			{
+				DependencyInjectionManager.InjectIntoObject(component);
+			}
 		}
 	}
 }
