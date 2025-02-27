@@ -2,7 +2,7 @@
 
 ## Description
 
-This package provides minimal setup global runtime dependency injection primarily for MonoBehavior scripts, and local edit time injection of components within prefabs. All you need is `[Injectable]` attribute on injected class and `[Inject]` on a target field for global injection, or `[InjectFromPrefab]` and `[InjectFromGameObject]` for local.
+This package provides minimal-setup global runtime dependency injection primarily for MonoBehavior scripts, and local edit-time injection of components within prefabs. All you need is `[Injectable]` attribute on injected class and `[Inject]` on a target field for global injection, or `[InjectFromPrefab]` and `[InjectFromGameObject]` for local injection in the editor.
 
 ## Usage
 
@@ -14,7 +14,7 @@ This package provides minimal setup global runtime dependency injection primaril
 - If `[Inject]` field is found befor the corresponding `[Injectable]` type is bound, an error will be produced.
 
 ### Local injection
-- Use `[InjectFromPrefab]` attribute for any Component fields to have Component automatically assigned from the same prefab
+- Use `[InjectFromPrefab]` attribute for any serialized Component fields to have Component automatically assigned from the same prefab
 - Use `[InjectFromGameObject]` attribute automatically assigning from the same game object within the prefab
 - First component found on the prefab or object of the required type will be assigned
 - Works for prefabs in the assets folder, not instances
