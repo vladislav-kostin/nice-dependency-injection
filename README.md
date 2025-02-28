@@ -10,7 +10,7 @@ This package provides minimal-setup global runtime dependency injection primaril
 - Add `[Injectable]` attribute to a class declaration.
 - Add `[Inject]` attribute to a field.
 - Initial injection happens after scene is loaded, after all `Awake` methods and before all `Start` methods.
-- If your object spawns after initial injection but also needs it, add `DependancyInjector` to it.
+- If your object spawns after initial injection but also needs it, add `DependencyInjector` component to it.
 - If `[Inject]` field is found befor the corresponding `[Injectable]` type is bound, an error will be produced.
 
 ### Local injection
@@ -70,4 +70,9 @@ public class SomeScript2 : MonoBehaviour
 - The objects that are being injected are meant to be present at the time of injection, will produce an error message otherwise
 - Objects that were spawned after they were requested for injection will not be injected into those `[Inject]` fields
 - For injection of other types, make calls to DependancyInjectionManager manually
-- Might not work as exected on scene load, tested on a single scene project
+
+## Known issues
+
+- Local injection sometimes doesn't update correctly especially in the hirarchy. Considering a more simple, efficient and reliable `OnValidate()` approach
+
+
